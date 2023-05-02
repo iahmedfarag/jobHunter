@@ -71,11 +71,14 @@ const userSlice = createSlice({
       state.isSidebarOpen = !state.isSidebarOpen;
     },
     // ! logout func
-    logoutUser: (state) => {
+    logoutUser: (state, { payload }) => {
       state.user = null;
       state.isSidebarOpen = false;
       state.isLogoutDropdownOpen = false;
       removeUserFromLocalStorage();
+      if (payload) {
+        toast.success(payload, { autoClose: 2000 });
+      }
     },
   },
   extraReducers: {

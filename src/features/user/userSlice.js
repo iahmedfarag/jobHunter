@@ -4,11 +4,13 @@ import { toast } from "react-toastify";
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
+  removeUserFromLocalStorage,
 } from "../../utils/localStorage.js";
 
 // ! initialState
 const initialState = {
   isLoading: false,
+  isSidebarOpen: false,
   user: getUserFromLocalStorage(),
 };
 
@@ -42,7 +44,21 @@ export const loginUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
+  reducers: {
+    // ! toggle sidebar
+    toggleSidebar: (state) => {
+      state.isSidebarOpen = !state.isSidebarOpen;
+    },
+    // ! logout func
+    logoutUser: (state) => {
+      state.user = null;
+      state.isSidebarOpen = false;
+      state.isLogoutDropdownOpen = false;
+      removeUserFromLocalStorage();
+    },
+  },
   extraReducers: {
+    // ! registerUser
     [registerUser.pending]: (state) => {
       state.isLoading = true;
     },
@@ -57,7 +73,7 @@ const userSlice = createSlice({
       state.isLoading = false;
       toast.error({ payload }, { autoClose: 2000 });
     },
-
+    // ! loginUser
     [loginUser.pending]: (state) => {
       state.isLoading = true;
     },
@@ -75,4 +91,6 @@ const userSlice = createSlice({
   },
 });
 
+export const { toggleSidebar, toggleLogoutDropdown, logoutUser } =
+  userSlice.actions;
 export default userSlice.reducer;

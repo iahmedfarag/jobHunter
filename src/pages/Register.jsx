@@ -3,7 +3,7 @@ import { Logo, FormRow } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage.js";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, registerUser } from "../features/user/userSlice.js";
+import { loginUser, registerUser } from "../features/user/userSlice.jsx";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {

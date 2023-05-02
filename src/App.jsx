@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Landing, Error, Register, Layout } from "./pages";
+import { Landing, Error, Register, Layout, ProtectedRoute } from "./pages";
 import { ToastContainer } from "react-toastify";
 import {
   Stats,
@@ -17,7 +17,11 @@ function App() {
       children: [
         {
           path: "/",
-          element: <DashboardLayout />,
+          element: (
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          ),
           children: [
             { path: "/", element: <Stats /> },
             { path: "add-job", element: <AddJob /> },

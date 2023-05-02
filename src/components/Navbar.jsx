@@ -1,19 +1,9 @@
 import React, { useState } from "react";
 import Wrapper from "../assets/wrappers/Navbar.js";
-import {
-  FaHome,
-  FaRegUserCircle,
-  FaCaretDown,
-  FaAlignLeft,
-  FaUserCircle,
-} from "react-icons/fa";
+import { FaCaretDown, FaAlignLeft, FaUserCircle } from "react-icons/fa";
 import Logo from "./Logo.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  toggleLogoutDropdown,
-  toggleSidebar,
-  logoutUser,
-} from "../features/user/userSlice.js";
+import { toggleSidebar, logoutUser } from "../features/user/userSlice.jsx";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.user);

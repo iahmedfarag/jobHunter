@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import customFetch from "../../utils/axios.js";
+import customFetch from "../../utils/axios.jsx";
 import { toast } from "react-toastify";
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
-} from "../../utils/localStorage.js";
+} from "../../utils/localStorage.jsx";
 
 // ! initialState
 const initialState = {
@@ -35,6 +35,27 @@ export const loginUser = createAsyncThunk(
       const resp = await customFetch.post("/auth/login", user);
       return resp.data;
     } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+// ! updateUser
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch("/auth/updateUser", user, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      return resp.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(loginUser());
+        return thunkAPI.rejectWithValue("Unauthorized logging out...");
+      }
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
@@ -85,6 +106,21 @@ const userSlice = createSlice({
       toast.success(`Welcome Back ${user.name}`, { autoClose: 2000 });
     },
     [loginUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload, { autoClose: 2000 });
+    },
+    // ! updateUser
+    [updateUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      addUserToLocalStorage(user);
+      toast.success(`User Updated!`, { autoClose: 2000 });
+    },
+    [updateUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload, { autoClose: 2000 });
     },

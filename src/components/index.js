@@ -9,6 +9,10 @@ import SearchContainer from "./SearchContainer.jsx";
 import JobsContainer from "./JobsContainer.jsx";
 import Job from "./Job.jsx";
 import JobInfo from "./jobInfo";
+import Loading from "./Loading.jsx";
+import StatsContainer from "./StatsContainer";
+import ChartsContainer from "./ChartsContainer.jsx";
+import PageBtnContainer from "./PageBtnContainer";
 
 export {
   Logo,
@@ -22,4 +26,8 @@ export {
   JobsContainer,
   Job,
   JobInfo,
+  Loading,
+  StatsContainer,
+  ChartsContainer,
+  PageBtnContainer,
 };
